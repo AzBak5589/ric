@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="acteurs")
+@Table(name="users")
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class User implements Serializable{
     @Column
     private String prenom;
     @Column
-    private String genre ;
+    private String genre;
     @Column
     private String profession;
     @Column

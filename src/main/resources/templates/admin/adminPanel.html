@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Panel</title>
+  </head>
+  <body>
+    <h1>Admin Panel</h1>
+
+    <h2>Home Page Content</h2>
+    <form action="/admin/saveHomeContent" method="post">
+      <textarea name="content">${homePageContent.content}</textarea>
+      <button type="submit">Save</button>
+    </form>
+
+    <h2>Contact Page Content</h2>
+    <form action="/admin/saveContactContent" method="post">
+      <textarea name="content">${contactPageContent.content}</textarea>
+      <button type="submit">Save</button>
+    </form>
+
+    <h2>Help Us Page Content</h2>
+    <form action="/admin/saveHelpUsContent" method="post">
+      <textarea name="content">${helpUsPageContent.content}</textarea>
+      <button type="submit">Save</button>
+    </form>
+  </body>
+</html>
