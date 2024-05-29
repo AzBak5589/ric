@@ -1,58 +1,48 @@
 package com.sgric.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import com.sgric.backend.model.HomePageContent;
-import com.sgric.backend.model.ContactPageContent;
-import com.sgric.backend.model.HelpUsPageContent;
-import com.sgric.backend.services.HomePageContentService;
-import com.sgric.backend.services.ContactPageContentService;
-import com.sgric.backend.services.HelpUsPageContentService;
 
-@Controller
+
+import com.sgric.backend.model.Accueil;
+import com.sgric.backend.services.AccueilService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/accueils")
 public class AdminController {
 
     @Autowired
-    private HomePageContentService homePageContentService;
+    private AccueilService accueilService;
 
-    @Autowired
-    private ContactPageContentService contactPageContentService;
-
-    @Autowired
-    private HelpUsPageContentService helpUsPageContentService;
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping
+    public List<Accueil> getAllAccueils() {
+        return accueilService.getAllAccueils();
     }
 
-    @GetMapping("/admin")
-    public String adminPanel(Model model) {
-        model.addAttribute("homePageContent", homePageContentService.getById(1L));
-        model.addAttribute("contactPageContent", contactPageContentService.getById(1L));
-        model.addAttribute("helpUsPageContent", helpUsPageContentService.getById(1L));
-        return "adminPanel";
+    @GetMapping("/{id}")
+    public ResponseEntity<Accueil> getAccueilById(@PathVariable Long id) {
+        Accueil accueil = accueilService.getAccueilById(id).orElseThrow(() -> new RuntimeException("Accueil not found"));
+        return ResponseEntity.ok(accueil);
     }
 
-    @PostMapping("/admin/saveHomeContent")
-    public String saveHomeContent(HomePageContent content) {
-        homePageContentService.save(content);
-        return "redirect:/admin";
+    @PostMapping
+    public Accueil createAccueil(@RequestBody Accueil accueil) {
+        return accueilService.createAccueil(accueil);
     }
 
-    @PostMapping("/admin/saveContactContent")
-    public String saveContactContent(ContactPageContent content) {
-        contactPageContentService.save(content);
-        return "redirect:/admin";
+    @PutMapping("/{id}")
+    public ResponseEntity<Accueil> updateAccueil(@PathVariable Long id, @RequestBody Accueil accueilDetails) {
+        Accueil updatedAccueil = accueilService.updateAccueil(id, accueilDetails);
+        return ResponseEntity.ok(updatedAccueil);
     }
 
-    @PostMapping("/admin/saveHelpUsContent")
-    public String saveHelpUsContent(HelpUsPageContent content) {
-        helpUsPageContentService.save(content);
-        return "redirect:/admin";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAccueil(@PathVariable Long id) {
+        accueilService.deleteAccueil(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
+
